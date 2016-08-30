@@ -135,7 +135,7 @@ namespace UnityStandardAssets.ImageEffects
                 return;
             }
 
-#if UNITY_EDITOR
+#if (UNITY_EDITOR || UNITY_STANDALONE)
             validRenderTextureFormat = true;
             if (source.format != RenderTextureFormat.ARGBHalf)
             {
@@ -236,7 +236,7 @@ namespace UnityStandardAssets.ImageEffects
 
             rt.MarkRestoreExpected(); // keeping luminance values between frames, RT restore expected
 
-#if UNITY_EDITOR
+#if (UNITY_EDITOR || UNITY_STANDALONE)
             if (Application.isPlaying && !freshlyBrewedInternalRt)
                 Graphics.Blit(lumRt, rt, tonemapMaterial, 2);
             else

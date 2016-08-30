@@ -46,7 +46,7 @@ namespace UnityStandardAssets.ImageEffects
 
             if (dx11Grain && supportDX11)
 			{
-#if UNITY_EDITOR
+#if (UNITY_EDITOR || UNITY_STANDALONE)
                 dx11NoiseShader = Shader.Find("Hidden/NoiseAndGrainDX11");
 #endif
                 dx11NoiseMaterial = CheckShaderAndCreateMaterial (dx11NoiseShader, dx11NoiseMaterial);

@@ -34,7 +34,7 @@ public class TouchCreator
 		foreach(var f in typeof(Touch).GetFields(BindingFlags.Instance | BindingFlags.NonPublic))
 		{
 			fields.Add(f.Name, f);
-			Debug.Log("name: " + f.Name);
+			// Debug.Log("name: " + f.Name);
 		}
 	}
 }
@@ -47,7 +47,7 @@ public class InputHelper : MonoBehaviour {
 	{
 		List<Touch> touches = new List<Touch>();
 		touches.AddRange(Input.touches);
-		#if UNITY_EDITOR
+		#if (UNITY_EDITOR || UNITY_STANDALONE) 
 		object mouseTouch = _GetMouseTouches();
 		if (mouseTouch != null) {
 			touches.Add ((Touch) mouseTouch);
@@ -65,7 +65,7 @@ public class InputHelper : MonoBehaviour {
 	public static int touchCount {
 		get {
 			int i = Input.touchCount;
-			#if UNITY_EDITOR
+			#if (UNITY_EDITOR || UNITY_STANDALONE)
 			if (Input.GetMouseButtonDown (0)) {
 				i += 1;
 			}
@@ -74,7 +74,7 @@ public class InputHelper : MonoBehaviour {
 		}
 	}
 
-	#if UNITY_EDITOR
+	#if (UNITY_EDITOR || UNITY_STANDALONE)
 	private static object _GetMouseTouches() {
 		if (lastFakeTouch == null) {
 			lastFakeTouch = new TouchCreator();
@@ -115,15 +115,15 @@ public class Touchstuff : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		int i = 1;
-		i = 10;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (InputHelper.touchCount > 0 && InputHelper.GetTouch(0).phase == TouchPhase.Began) {
-			i += 1;
-			Debug.Log(i);
+		foreach (Touch touch in InputHelper.GetTouches()) {
+			if (touch.phase == TouchPhase.Began) {
+				i += 1;
+				Debug.Log (i);
+			}
 		}
 	}
 }
