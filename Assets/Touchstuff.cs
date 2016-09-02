@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Reflection;
 using System.Collections.Generic;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class TouchCreator
 {
@@ -109,9 +111,25 @@ public class InputHelper : MonoBehaviour {
 
 }
 
-public class Touchstuff : MonoBehaviour {
+public class Touchstuff : MonoBehaviour, IPointerDownHandler {
 
 	int i;
+	public Text score;
+	public GameObject cut;
+
+	#region IPointerClickHandler implementation
+	public void OnPointerDown (PointerEventData eventData)
+	{
+		Vector3 worldPos;
+		worldPos = Camera.main.ScreenToWorldPoint (eventData.position);
+		worldPos.z = 1;
+		Instantiate(cut, worldPos, Quaternion.Euler(0, 0, Random.Range (0, 360)));
+		this.GetComponent<Animator>().SetBool("tapped", true);
+		i += 1;
+	}
+	#endregion
+
+
 
 	// Use this for initialization
 	void Start () {
@@ -119,11 +137,24 @@ public class Touchstuff : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		/*
+		Vector3 worldPos;
 		foreach (Touch touch in InputHelper.GetTouches()) {
 			if (touch.phase == TouchPhase.Began) {
+				worldPos = Camera.main.ScreenToWorldPoint (touch.position);
+				worldPos.z = 1;
+				Instantiate(cut, worldPos, Quaternion.Euler(0, 0, Random.Range (0, 360)));
+				this.GetComponent<Animator>().SetBool("tapped", true);
 				i += 1;
-				Debug.Log (i);
 			}
 		}
+
+		score.text = i.ToString();
+		*/
 	}
+
+	public void TappedFase() {
+		this.GetComponent<Animator>().SetBool("tapped", false);
+	}
+
 }
